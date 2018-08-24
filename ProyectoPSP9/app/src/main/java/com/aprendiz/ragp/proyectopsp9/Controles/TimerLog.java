@@ -64,6 +64,7 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         txtInterrupcion.setText("");
         txtDelta.setText("");
         txtComentario.setText("");
+        btnStop.setEnabled(false);
     }
 
     @Override
@@ -83,6 +84,12 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         Listar();
         validar();
         capturar();
+        cancelar();
+    }
+
+    private void cancelar() {
+
+        btnStop.setEnabled(false);
     }
 
     private void capturar() {
@@ -99,6 +106,44 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
 
 
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("start", txtStart.getText().toString());
+        editor.commit();
+
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("start", txtStart.getText().toString());
+        editor.commit();
+
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("start", txtStart.getText().toString());
+        editor.commit();
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onRestart() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("start", txtStart.getText().toString());
+        editor.commit();
+
+        super.onRestart();
     }
 
     @Override
@@ -186,8 +231,8 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         switch (v.getId()){
 
             case R.id.btnStart:
-
                 obtenerHora();
+                btnStop.setEnabled(true);
 
                 break;
 
