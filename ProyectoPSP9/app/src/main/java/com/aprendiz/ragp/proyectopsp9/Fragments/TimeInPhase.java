@@ -80,6 +80,10 @@ public class TimeInPhase extends Fragment {
         final EditText txtTiempo = view.findViewById(R.id.txtTiempo);
         txtTiempo.setText(Integer.toString(MenuPrincipal.project.getTime()));
         Button btnGuardar = view.findViewById(R.id.btnSave);
+        AdapterR adapterR = new AdapterR(managerDB.timeInPhase(MenuPrincipal.project.getId()));
+        recyclerView.setAdapter(adapterR);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        recyclerView.setHasFixedSize(true);
         //Acción la cual permite guardar el tiempo ingresado en el campo txtTiempo
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +97,7 @@ public class TimeInPhase extends Fragment {
                         project.setTime(tiempo);
                         managerDB.updateProject(project);
                         MenuPrincipal.project.setTime(project.getTime());
+                        Toast.makeText(getContext(), "Se ha guardado correctamente", Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(getContext(), "Por favor que el número sea mayor a 0", Toast.LENGTH_SHORT).show();
                         txtTiempo.setError("Por favor que el número sea mayor a 0");

@@ -9,26 +9,26 @@
         android:roundIcon="@drawable/logoapp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MenuPrincipal">
+        <activity android:name=".MenuPrincipal" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Controles.Menu_Proyecto" />
+        <activity android:name=".Controles.Menu_Proyecto" android:screenOrientation="portrait" />
         <activity
-            android:name=".Controles.TimerLog"
+            android:name=".Controles.TimerLog" android:screenOrientation="portrait"
             android:label="@string/title_activity_timer_log" />
         <activity
-            android:name=".Controles.DefectLog"
+            android:name=".Controles.DefectLog" android:screenOrientation="portrait"
             android:label="@string/title_activity_defect_log" />
         <activity
-            android:name=".Controles.ProyectPlanSummary"
+            android:name=".Controles.ProyectPlanSummary" android:screenOrientation="portrait"
             android:label="@string/title_activity_proyect_plan_summary"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Controles.LTimeLog" />
-        <activity android:name=".Controles.LDefectLog"></activity>
+        <activity android:name=".Controles.LTimeLog" android:screenOrientation="portrait" />
+        <activity android:name=".Controles.LDefectLog" android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

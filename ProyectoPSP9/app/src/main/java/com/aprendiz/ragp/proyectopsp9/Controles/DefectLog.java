@@ -400,7 +400,7 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
                 @Override
                 public void onClick(View v) {
                     ManagerDB managerDB = new ManagerDB(DefectLog.this);
-                    managerDB.insertDefectLog(defectLog);
+                    managerDB.updateDefectLog(defectLog);
                     Toast.makeText(DefectLog.this, "Se ha editado correctamente", Toast.LENGTH_SHORT).show();
                     limpiar();
                     dialog.cancel();
@@ -471,5 +471,9 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LDefectLog.modo=0;
+    }
 }

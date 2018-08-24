@@ -265,8 +265,9 @@ public class ManagerDB {
         }
         cursor.close();
         String [] listPhases = Constants.listPhases;
-        int acumulado=0;
+
         for (int i=0; i<listPhases.length; i++){
+            int acumulado=0;
             Cursor cursorM = db.rawQuery("SELECT * FROM DEFECTLOG WHERE PHASEI='"+listPhases[i]+"' AND PROJECT ="+project+" ;",null);
             if (cursorM.moveToFirst()){
                 do {
@@ -307,8 +308,8 @@ public class ManagerDB {
         }
         cursor.close();
         String [] listPhases = Constants.listPhases;
-        int acumulado=0;
         for (int i=0; i<listPhases.length; i++){
+            int acumulado=0;
             Cursor cursorM = db.rawQuery("SELECT * FROM DEFECTLOG WHERE PHASER='"+listPhases[i]+"' AND PROJECT ="+project+" ;",null);
             if (cursorM.moveToFirst()){
                 do {

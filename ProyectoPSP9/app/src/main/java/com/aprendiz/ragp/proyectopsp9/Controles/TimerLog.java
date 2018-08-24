@@ -1,7 +1,11 @@
 package com.aprendiz.ragp.proyectopsp9.Controles;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -13,8 +17,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.aprendiz.ragp.proyectopsp9.MenuPrincipal;
 import com.aprendiz.ragp.proyectopsp9.R;
+import com.aprendiz.ragp.proyectopsp9.models.CDefectLog;
+import com.aprendiz.ragp.proyectopsp9.models.CTimeLog;
+import com.aprendiz.ragp.proyectopsp9.models.Constants;
+import com.aprendiz.ragp.proyectopsp9.models.ManagerDB;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +42,9 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
     Date dateStart, dateStop;
 
     int delta = 0;
+    CTimeLog timeLog=new CTimeLog();
+    int modo=0;
+    int validar = 0;
 
     int interrupciones = 0;
     private TextView mTextMessage;
@@ -47,10 +60,20 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
                     limpiar();
                     return true;
                 case R.id.navigation_dashboard:
-
+                    validar();
+                    if (modo==0){
+                        inputData();
+                    }else {
+                        updateData();
+                    }
                     return true;
                 case R.id.navigation_notifications:
-
+                    if (modo==0){
+                        Intent intent = new Intent(TimerLog.this,LTimeLog.class);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(TimerLog.this, "Estas en modo editar", Toast.LENGTH_SHORT).show();
+                    }
                     return true;
             }
             return false;
@@ -78,12 +101,16 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true); //Generamos la flecha de back
-
+        modo=LTimeLog.modo;
         inicializar();
         escuchar();
         Listar();
         capturar();
         cancelar();
+
+        if (modo==1){
+            inputValues();
+        }
     }
 
     private void cancelar() {
@@ -144,6 +171,8 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("start", txtStart.getText().toString());
         editor.commit();
+        limpiar();
+        LTimeLog.modo=0;
 
         super.onDestroy();
     }
@@ -184,7 +213,7 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
     //Validamos que los campos no estes vacíos cuando se vaya a registrar
     private void validar() {
 
-        int validar = 0;
+        validar =0;
         if (txtStart.getText().toString().length()>0){
             validar++;
         }else{
@@ -309,4 +338,126 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         String fecha1 = fecha.format(dateStart);
         txtStart.setText(fecha1);
     }
+
+    public  void inputData(){
+        if (validar>=2){
+            timeLog.setPhase(spinnerPhase.getSelectedItem().toString());
+            timeLog.setComments(txtComentario.getText().toString());
+            timeLog.setStart(txtStart.getText().toString());
+            timeLog.setDelta(delta);
+            timeLog.setInterruptions(interrupciones);
+            timeLog.setStop(txtStop.getText().toString());
+            timeLog.setProject(MenuPrincipal.project.getId());
+            final Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.item_todo);
+            String messege = "PHASE: "+timeLog.getPhase() +"\n"+
+                    "START: "+timeLog.getStart() +"\n"+
+                    "INTERRUPTIOS: "+timeLog.getInterruptions() +"\n"+
+                    "STOP: "+timeLog.getStop() +"\n"+
+                    "FIXTIME: "+timeLog.getDelta() +"\n"+
+                    "COMMENTS: "+timeLog.getComments() +"\n";
+            TextView txtTodo = dialog.findViewById(R.id.txtTodo);
+            txtTodo.setText(messege);
+            Button btnAceptar = dialog.findViewById(R.id.btnAceptar);
+            Button btnCancelar = dialog.findViewById(R.id.btnCancelar);
+            btnAceptar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ManagerDB managerDB = new ManagerDB(TimerLog.this);
+                    managerDB.insertTimeLog(timeLog);
+                    Toast.makeText(TimerLog.this, "Se ha guardado correctamente", Toast.LENGTH_SHORT).show();
+                    limpiar();
+                    dialog.cancel();
+                }
+            });
+
+            btnCancelar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.cancel();
+                }
+            });
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+
+
+        }else {
+            Toast.makeText(this, "Faltan campos por ingresar", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //Método para editar los valores de las vistas a base de datos
+    public  void updateData(){
+        if (validar>=2) {
+            timeLog.setPhase(spinnerPhase.getSelectedItem().toString());
+            timeLog.setComments(txtComentario.getText().toString());
+            timeLog.setStart(txtStart.getText().toString());
+            timeLog.setDelta(delta);
+            timeLog.setInterruptions(interrupciones);
+            timeLog.setStop(txtStop.getText().toString());
+            timeLog.setProject(MenuPrincipal.project.getId());
+            final Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.item_todo);
+            TextView txtTitulo = dialog.findViewById(R.id.txtTitulo);
+            txtTitulo.setText(getString(R.string.deseaseditar));
+            String messege = "PHASE: "+timeLog.getPhase() +"\n"+
+                    "START: "+timeLog.getStart() +"\n"+
+                    "INTERRUPTIOS: "+timeLog.getInterruptions() +"\n"+
+                    "STOP: "+timeLog.getStop() +"\n"+
+                    "FIXTIME: "+timeLog.getDelta() +"\n"+
+                    "COMMENTS: "+timeLog.getComments() +"\n";
+            TextView txtTodo = dialog.findViewById(R.id.txtTodo);
+            txtTodo.setText(messege);
+            Button btnAceptar = dialog.findViewById(R.id.btnAceptar);
+            Button btnCancelar = dialog.findViewById(R.id.btnCancelar);
+            btnAceptar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ManagerDB managerDB = new ManagerDB(TimerLog.this);
+                    managerDB.updateTimeLog(timeLog);
+                    Toast.makeText(TimerLog.this, "Se ha editado correctamente", Toast.LENGTH_SHORT).show();
+                    limpiar();
+                    dialog.cancel();
+                }
+            });
+
+            btnCancelar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.cancel();
+                }
+            });
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+
+
+        }else {
+            Toast.makeText(this, "Faltan campos por ingresar", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void inputValues() {
+        timeLog = LTimeLog.timeLog;
+        try {
+            for (int i = 0; i < Constants.listPhases.length; i++) {
+                if (timeLog.getPhase().equals(Constants.listPhases[i])) {
+                    spinnerPhase.setSelection(i);
+                }
+
+            }
+
+        } catch (Exception e) {
+
+        }
+
+        txtStart.setText(timeLog.getStart());
+        txtStop.setText(timeLog.getStop());
+        txtComentario.setText(timeLog.getComments());
+        txtDelta.setText(Integer.toString(timeLog.getDelta()));
+        txtInterrupcion.setText(Integer.toString(timeLog.getInterruptions()));
+    }
+
+
+
 }
