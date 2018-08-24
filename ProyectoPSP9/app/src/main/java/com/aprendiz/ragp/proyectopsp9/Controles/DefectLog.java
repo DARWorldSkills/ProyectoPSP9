@@ -35,7 +35,7 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
     boolean bandera1 = false;
 
     int tiempo [] = {0,0};
-
+    int validar = 0;
 
     private TextView mTextMessage;
 
@@ -200,7 +200,7 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
     //Validamos los campos para que cuando se registre un defect no haya campos vacios
     private void validar() {
 
-        int validar = 0;
+        validar =0;
 
         if (txtDate.getText().toString().length()>0){
             validar++;
@@ -292,5 +292,9 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
         String fecha1 = fecha.format(date);
         txtDate.setText(fecha1);
         
+    }
+
+    public  void inputData(){
+
     }
 }

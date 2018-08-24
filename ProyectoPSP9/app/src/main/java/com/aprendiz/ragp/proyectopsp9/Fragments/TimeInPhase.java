@@ -4,14 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.aprendiz.ragp.proyectopsp9.MenuPrincipal;
 import com.aprendiz.ragp.proyectopsp9.R;
 import com.aprendiz.ragp.proyectopsp9.models.AdapterP;
 import com.aprendiz.ragp.proyectopsp9.models.AdapterR;
+import com.aprendiz.ragp.proyectopsp9.models.CProject;
 import com.aprendiz.ragp.proyectopsp9.models.ManagerDB;
 
 import java.util.List;
@@ -32,7 +38,7 @@ public class TimeInPhase extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    RecyclerView recyclerView;
     public TimeInPhase() {
         // Required empty public constructor
     }
@@ -69,10 +75,44 @@ public class TimeInPhase extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_time_in_phase, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        ManagerDB managerDB = new ManagerDB(getContext());
-        //AdapterR adapterR = new AdapterR(managerDB.timeInPhase());
+        recyclerView = view.findViewById(R.id.recyclerView);
+        final ManagerDB managerDB = new ManagerDB(getContext());
+        final EditText txtTiempo = view.findViewById(R.id.txtTiempo);
+        txtTiempo.setText(MenuPrincipal.project.getTime());
+        Button btnGuardar = view.findViewById(R.id.btnSave);
+        //Acción la cual permite guardar el tiempo ingresado en el campo txtTiempo
+        btnGuardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int tiempo=0;
+                try {
+                    tiempo = Integer.parseInt(txtTiempo.getText().toString());
+                    if (tiempo>1){
+
+                        CProject project = new CProject();
+                        project.setTime(tiempo);
+                        managerDB.updateProject(project);
+                        MenuPrincipal.project.setTime(project.getTime());
+                    }else {
+                        Toast.makeText(getContext(), "Por favor que el número sea mayor a 0", Toast.LENGTH_SHORT).show();
+                        txtTiempo.setError("Por favor que el número sea mayor a 0");
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), "Por favor no ingrese caracteres especiales o no deje vacio", Toast.LENGTH_SHORT).show();
+                    txtTiempo.setError("Por favor no ingrese caracteres especiales o no deje vacio");
+                }
+            }
+        });
+
         return view;
     }
 
+
+    private void inputAdaptet(){
+        ManagerDB managerDB = new ManagerDB(getContext());
+        AdapterR adapterR = new AdapterR(managerDB.timeInPhase(MenuPrincipal.project.getId()));
+        recyclerView.setAdapter(adapterR);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        recyclerView.setHasFixedSize(true);
+    }
 }
