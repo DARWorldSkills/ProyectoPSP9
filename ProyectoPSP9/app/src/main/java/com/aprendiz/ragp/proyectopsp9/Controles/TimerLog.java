@@ -97,6 +97,28 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         txtStart.setText(sharedPreferences.getString("start ", ""));
     }
 
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("start", txtStart.getText().toString());
+        editor.commit();
+        
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("start", txtStart.getText().toString());
+        editor.commit();
+
+
+        super.onSaveInstanceState(outState);
+    }
+
     @Override
     public void onBackPressed() {
 
