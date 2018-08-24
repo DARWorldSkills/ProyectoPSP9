@@ -1,5 +1,7 @@
 package com.aprendiz.ragp.proyectopsp9.Controles;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -26,6 +28,7 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
     Button btnStart, btnStop;
     Spinner spinnerPhase;
 
+    SharedPreferences sharedPreferences;
     Date dateStart, dateStop;
 
     int delta = 0;
@@ -79,6 +82,23 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         escuchar();
         Listar();
         validar();
+        capturar();
+    }
+
+    private void capturar() {
+
+        txtStart.setText(sharedPreferences.getString("start ", ""));
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("start", txtStart.getText().toString());
+        editor.commit();
+
+
+        super.onBackPressed();
     }
 
     @Override
@@ -156,6 +176,8 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         btnStop = findViewById(R.id.btnStop);
 
         spinnerPhase = findViewById(R.id.spinnerPhase);
+
+        sharedPreferences = getSharedPreferences("start", Context.MODE_PRIVATE); // Creo el archivo
 
     }
 
