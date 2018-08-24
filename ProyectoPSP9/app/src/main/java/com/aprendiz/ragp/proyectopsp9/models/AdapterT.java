@@ -11,9 +11,9 @@ import com.aprendiz.ragp.proyectopsp9.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterR extends RecyclerView.Adapter<AdapterR.Holder> {
+public class AdapterT extends RecyclerView.Adapter<AdapterT.Holder> {
     //Declaración de variables
-    List<Results> resultsList=new ArrayList<>();
+    List<CTimeLog> timeLogs=new ArrayList<>();
     private OnItemClickListener mlistener;
     //Interface par escuchar cuando se hace un click a un item del RecyclerView
     public interface OnItemClickListener{
@@ -23,8 +23,8 @@ public class AdapterR extends RecyclerView.Adapter<AdapterR.Holder> {
     //Constructor para la utilizacion de la clase AdapterR
 
 
-    public AdapterR(List<Results> resultsList) {
-        this.resultsList = resultsList;
+    public AdapterT(List<CTimeLog> timeLogs) {
+        this.timeLogs = timeLogs;
     }
 
     //Método para el ingreso de la variable mlistener
@@ -43,13 +43,13 @@ public class AdapterR extends RecyclerView.Adapter<AdapterR.Holder> {
     //Método para el llamado de los metodos del objeto holder
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        holder.connectData(resultsList.get(position));
+        holder.connectData(timeLogs.get(position));
     }
 
     //Función que determina el número de items a mostart
     @Override
     public int getItemCount() {
-        return resultsList.size();
+        return timeLogs.size();
     }
 
     //Clase Holder para la creación de los items del RecyclerView
@@ -71,13 +71,13 @@ public class AdapterR extends RecyclerView.Adapter<AdapterR.Holder> {
         }
 
         //Método para el ingreso de datos al item
-        public void connectData(Results results){
+        public void connectData(CTimeLog cTimeLog){
             TextView txtPrimero = itemView.findViewById(R.id.txtPrimero);
             TextView txtSegundo = itemView.findViewById(R.id.txtSegundo);
             TextView txtTercero = itemView.findViewById(R.id.txtTercero);
-            txtPrimero.setText(results.getPhase());
-            txtSegundo.setText(Integer.toString(results.getTime()));
-            txtTercero.setText(results.getPercent()+"%");
+            txtPrimero.setText(cTimeLog.getPhase());
+            txtSegundo.setText(cTimeLog.getStart());
+            txtTercero.setText(cTimeLog.getStop());
         }
     }
 }

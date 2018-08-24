@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.aprendiz.ragp.proyectopsp9.Controles.Menu_Proyecto;
 import com.aprendiz.ragp.proyectopsp9.models.AdapterP;
 import com.aprendiz.ragp.proyectopsp9.models.CProject;
 import com.aprendiz.ragp.proyectopsp9.models.ManagerDB;
@@ -52,7 +53,9 @@ public class MenuPrincipal extends AppCompatActivity {
             @Override
             public void itemClick(int position) {
                 project = projectList.get(position);
-                
+                Intent intent = new Intent(MenuPrincipal.this, Menu_Proyecto.class);
+                startActivity(intent);
+
             }
         });
     }

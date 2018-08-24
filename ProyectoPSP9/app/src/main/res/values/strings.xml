@@ -18,4 +18,5 @@
     <string name="ingreseeltiempodelproyectoenminutos">Ingrese el tiempo del proyecto en minutos</string>
     <string name="cancelar">Cancelar</string>
     <string name="aceptar">Aceptar</string>
+    <string name="guardar">Guardar</string>
 </resources>
