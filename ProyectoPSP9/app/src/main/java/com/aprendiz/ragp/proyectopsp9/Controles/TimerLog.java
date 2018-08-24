@@ -30,6 +30,7 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
 
     int delta = 0;
 
+    int interrupciones = 0;
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -62,7 +63,7 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true); //Generamos la flecha de back
 
         inicializar();
         escuchar();
@@ -75,6 +76,7 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
 
         int id = item.getItemId();
 
+        //Función que hace retrocer por medio de la flecha back
         if (id == android.R.id.home){
 
             finish();
@@ -83,6 +85,7 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         return super.onOptionsItemSelected(item);
     }
 
+    //Validamos que los campos no estes vacíos cuando se vaya a registrar
     private void validar() {
 
         int validar = 0;
@@ -98,7 +101,7 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         }else {
             txtStop.setError("You need this field");
         }
-        if (delta >= 0){
+        if (delta >= 0){  // Validamos que el resultado de delta no puede ser negativo
             validar++;
         }else {
 
@@ -107,6 +110,7 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
 
     }
 
+    //Creamos una lista para agregar los datos al spinner
     private void Listar() {
 
         List<String>phase = new ArrayList<>();
@@ -128,6 +132,7 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         btnStop.setOnClickListener(this);
     }
 
+    //Referenciamos
     private void inicializar() {
 
         txtStart = findViewById(R.id.txtStart);
@@ -157,12 +162,38 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
             case R.id.btnStop:
 
                 obtenerHora2();
+                calcularDelta();
 
                 break;
         }
 
     }
 
+    //Calcamos el resultado de delta haciendo una operacion para que sea en minutos
+    private void calcularDelta() {
+
+        calcularInterrupciones();
+        double diferencia = dateStop.getTime() - dateStart.getTime();
+        delta = (int) ((diferencia / 60000)) - interrupciones;
+        txtDelta.setText(Integer.toString(delta));
+
+
+    }
+
+    //Calculamos las interrupciones que hay en el proyecto
+    private void calcularInterrupciones() {
+
+        try {
+            interrupciones = Integer.parseInt(txtInterrupcion.getText().toString());
+
+        }catch (Exception e){
+            interrupciones = 0;
+
+        }
+
+    }
+
+    //Obtenemos la fehca y hora del dispositivo
     private void obtenerHora2() {
 
         dateStop = new Date();
@@ -172,6 +203,7 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
 
     }
 
+    //Obtenemos la fehca y hora del dispositivo
     private void obtenerHora() {
 
         dateStart = new Date();

@@ -27,18 +27,20 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Date"
+            android:textColor="@color/azul"
             android:textSize="15sp" />
 
         <EditText
             android:id="@+id/txtDate"
-            android:layout_width="214dp"
-            android:enabled="false"
-            android:layout_height="match_parent" />
+            android:layout_width="197dp"
+            android:layout_height="match_parent"
+            android:enabled="false" />
 
         <Button
             android:id="@+id/btnDate"
-            android:layout_width="58dp"
-            android:layout_height="match_parent" />
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/reloj" />
 
 
 
@@ -63,6 +65,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Type"
+            android:textColor="@color/azul"
             android:textSize="15sp" />
 
         <Spinner
@@ -94,6 +97,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Phase Injected"
+            android:textColor="@color/azul"
             android:textSize="15sp" />
 
         <Spinner
@@ -124,6 +128,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Phase Removede"
+            android:textColor="@color/azul"
             android:textSize="15sp" />
 
         <Spinner
@@ -155,28 +160,32 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Fix Time"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textColor="@color/azul" />
 
         <EditText
             android:id="@+id/txtFixTime"
-            android:layout_width="184dp"
-            android:enabled="false"
-            android:layout_height="match_parent" />
+            android:layout_width="122dp"
+            android:layout_height="match_parent"
+            android:enabled="false" />
 
         <Button
             android:id="@+id/btnGo"
-            android:layout_width="30dp"
-            android:layout_height="match_parent" />
+            android:layout_width="37dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/go" />
 
         <Button
             android:id="@+id/btnStop"
-            android:layout_width="31dp"
-            android:layout_height="match_parent" />
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/stop" />
 
         <Button
             android:id="@+id/btnRestart"
-            android:layout_width="31dp"
-            android:layout_height="match_parent" />
+            android:layout_width="37dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/reset" />
 
 
     </LinearLayout>
@@ -188,6 +197,7 @@
         android:layout_marginBottom="8dp"
         app:cardCornerRadius="20dp"
         android:layout_marginEnd="8dp"
+        app:cardBackgroundColor="@color/azul"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
@@ -200,11 +210,14 @@
             android:layout_height="33dp"
             android:text="Defect Description"
             android:textAlignment="center"
+            android:textColor="#fff"
+            android:textStyle="bold"
             android:textSize="15sp" />
 
         <EditText
             android:id="@+id/txtDefectDesc"
             android:layout_width="match_parent"
+            android:textColor="#fff"
             android:layout_height="match_parent" />
 
 

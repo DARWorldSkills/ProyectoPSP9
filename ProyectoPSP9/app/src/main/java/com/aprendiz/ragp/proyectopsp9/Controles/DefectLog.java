@@ -3,6 +3,7 @@ package com.aprendiz.ragp.proyectopsp9.Controles;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aprendiz.ragp.proyectopsp9.R;
 
@@ -27,6 +29,13 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
     
     Date date;
     
+    Thread thread;
+
+    boolean bandera = true;
+    boolean bandera1 = false;
+
+    int tiempo [] = {0,0};
+
 
     private TextView mTextMessage;
 
@@ -61,14 +70,79 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
 
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Llamos la flecha back
         
         inicializar();
         escuchar();
         validar();
         Listar();
+        cronometro();
     }
 
+    //Creamos un hilo el cual nos ayuda a llevar el cronometro
+    private void cronometro() {
+
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while (bandera){
+
+                    try {
+                        {
+                            Thread.sleep(1000);
+
+                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (bandera1){
+
+                                    tiempo[0]++;
+                                    if (tiempo[0] == 60){
+                                        tiempo[1]++;
+                                        tiempo[0] = 0;
+                                    }
+
+                                    if (tiempo[0] >= 0 && tiempo [0] <10){
+
+                                        if (tiempo[0] >= 0 && tiempo [0] <10){
+                                            txtFix.setText("0" + tiempo[1] + ":" + "0" + tiempo[0]);
+                                        }else {
+
+                                            txtFix.setText(tiempo[1] + ":" + "0" + tiempo[0]);
+                                        }
+                                    }
+                                    if (tiempo[0]  >= 10 && tiempo [0] < 60){
+                                        if (tiempo[0]  >= 0 && tiempo[0] < 10){
+                                            txtFix.setText("0" + tiempo[1] + ":" + tiempo[0]);
+                                        }else {
+
+                                            txtFix.setText(tiempo[1] + ":" + tiempo[0]);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+        thread.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -82,6 +156,7 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
         return super.onOptionsItemSelected(item);
     }
 
+   //Creamos una lista Pra agragar los datos de los Spinners
     private void Listar() {
 
         List<String>Type = new ArrayList<>();
@@ -114,6 +189,7 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
 
     }
 
+    //Validamos los campos para que cuando se registre un defect no haya campos vacios
     private void validar() {
 
         int validar = 0;
@@ -176,14 +252,25 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
 
             case R.id.btnGo:
 
+                bandera1 = true;
+                Toast.makeText(this, "Go", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.btnStop:
+
+                bandera1 = false;
+                Toast.makeText(this, "Stop", Toast.LENGTH_SHORT).show();
 
                 break;
 
             case R.id.btnRestart:
 
+                bandera1 = false;
+                tiempo [0] = 0;
+                tiempo [1] = 0;
+                txtFix.setText("0" + tiempo[1] + ":" + tiempo[0]);
+
+                Toast.makeText(this, "Reset", Toast.LENGTH_SHORT).show();
                 break;
         }
         
