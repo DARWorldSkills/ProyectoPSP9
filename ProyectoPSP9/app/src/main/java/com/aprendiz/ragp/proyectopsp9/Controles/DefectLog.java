@@ -1,5 +1,10 @@
 package com.aprendiz.ragp.proyectopsp9.Controles;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -14,7 +19,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aprendiz.ragp.proyectopsp9.MenuPrincipal;
 import com.aprendiz.ragp.proyectopsp9.R;
+import com.aprendiz.ragp.proyectopsp9.models.CDefectLog;
+import com.aprendiz.ragp.proyectopsp9.models.ManagerDB;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,13 +30,13 @@ import java.util.Date;
 import java.util.List;
 
 public class DefectLog extends AppCompatActivity implements View.OnClickListener{
-    
+
     EditText txtDate,txtFix, txtDescripcion;
     Button btnDate, btnGo, btnStop, btnReset;
     Spinner spinnerType, spinnerPhaseInjected, spinnerPhaseRemoved;
-    
+
     Date date;
-    
+
     Thread thread;
 
     boolean bandera = true;
@@ -36,7 +44,11 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
 
     int tiempo [] = {0,0};
     int validar = 0;
+    CDefectLog defectLog=new CDefectLog();
+    int modo=0;
 
+    List<String> listType = new ArrayList<>();
+    List<String> listPhases = new ArrayList<>();
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -51,10 +63,20 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
 
                     return true;
                 case R.id.navigation_dashboard:
-
+                    validar();
+                    if (modo==0){
+                        inputData();
+                    }else {
+                        updateData();
+                    }
                     return true;
                 case R.id.navigation_notifications:
-
+                    if (modo==0){
+                        Intent intent = new Intent(DefectLog.this,LDefectLog.class);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(DefectLog.this, "Estas en modo editar", Toast.LENGTH_SHORT).show();
+                    }
                     return true;
             }
             return false;
@@ -65,6 +87,8 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
         txtDate.setText("");
         txtFix.setText("");
         txtDescripcion.setText("");
+        tiempo[0]=0;
+        tiempo[1]=0;
     }
 
     @Override
@@ -75,16 +99,20 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+        modo=LDefectLog.modo;
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Llamos la flecha back
-        
+
         inicializar();
         escuchar();
-        validar();
+
         Listar();
         cronometro();
+
+        if (modo==1){
+            inputValues();
+        }
     }
 
     //Creamos un hilo el cual nos ayuda a llevar el cronometro
@@ -179,7 +207,7 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
         Type.add("Function");
         Type.add("System");
         Type.add("Environment");
-
+        listType= Type;
         List<String>phases = new ArrayList<>();
         phases.add("PLAN");
         phases.add("DLC");
@@ -187,7 +215,7 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
         phases.add("COMPILE");
         phases.add("UT");
         phases.add("PM");
-
+        listPhases= phases;
         ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Type);
         spinnerType.setAdapter(adapter);
 
@@ -223,39 +251,39 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
         btnGo.setOnClickListener(this);
         btnStop.setOnClickListener(this);
         btnReset.setOnClickListener(this);
-        
-        
-        
+
+
+
     }
 
     //Referenciamos los campos que vamos a utilizar
     private void inicializar() {
-        
+
         txtDate = findViewById(R.id.txtDate);
         txtFix = findViewById(R.id.txtFixTime);
         txtDescripcion = findViewById(R.id.txtDefectDesc);
-        
+
         btnDate = findViewById(R.id.btnDate);
         btnGo = findViewById(R.id.btnGo);
         btnStop = findViewById(R.id.btnStop);
         btnReset = findViewById(R.id.btnRestart);
-        
+
         spinnerType = findViewById(R.id.SpinnerType);
         spinnerPhaseInjected = findViewById(R.id.SpinnerPhaseInjected);
         spinnerPhaseRemoved = findViewById(R.id.SpinnerPhaseRemovede);
-        
-        
+
+
     }
 
     @Override
     public void onClick(View v) {
-        
+
         switch (v.getId()){
-            
+
             case R.id.btnDate:
-                
+
                 TomarFecha();
-                
+
                 break;
 
             case R.id.btnGo:
@@ -281,20 +309,167 @@ public class DefectLog extends AppCompatActivity implements View.OnClickListener
                 Toast.makeText(this, "Reset", Toast.LENGTH_SHORT).show();
                 break;
         }
-        
+
     }
 
     //Obtenemos fecha y hora del dispositivo
     private void TomarFecha() {
-        
+
         date = new Date();
         SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         String fecha1 = fecha.format(date);
         txtDate.setText(fecha1);
-        
+
     }
 
+    //Método para ingresar los valores de las vistas a base de datos
     public  void inputData(){
+        if (validar>=2){
+            bandera1=false;
+            defectLog.setDate(txtDate.getText().toString());
+            defectLog.setComments(txtDescripcion.getText().toString());
+            defectLog.setFixtime(txtFix.getText().toString());
+            defectLog.setType(spinnerType.getSelectedItem().toString());
+            defectLog.setPhaseI(spinnerPhaseInjected.getSelectedItem().toString());
+            defectLog.setPhaseR(spinnerPhaseRemoved.getSelectedItem().toString());
+            defectLog.setProject(MenuPrincipal.project.getId());
+            final Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.item_todo);
+            String messege = "DATE: "+defectLog.getDate() +"\n"+
+                    "TYPE: "+defectLog.getType() +"\n"+
+                    "PHASE INJETED: "+defectLog.getPhaseI() +"\n"+
+                    "PHASE REMOVED: "+defectLog.getPhaseR() +"\n"+
+                    "FIXTIME: "+defectLog.getFixtime() +"\n"+
+                    "DESCRIPCION: "+defectLog.getComments() +"\n";
+            TextView txtTodo = dialog.findViewById(R.id.txtTodo);
+            txtTodo.setText(messege);
+            Button btnAceptar = dialog.findViewById(R.id.btnAceptar);
+            Button btnCancelar = dialog.findViewById(R.id.btnCancelar);
+            btnAceptar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ManagerDB managerDB = new ManagerDB(DefectLog.this);
+                    managerDB.insertDefectLog(defectLog);
+                    Toast.makeText(DefectLog.this, "Se ha guardado correctamente", Toast.LENGTH_SHORT).show();
+                    limpiar();
+                    dialog.cancel();
+                }
+            });
+
+            btnCancelar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.cancel();
+                }
+            });
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+
+
+        }else {
+            Toast.makeText(this, "Faltan campos por ingresar", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //Método para editar los valores de las vistas a base de datos
+    public  void updateData(){
+        if (validar>=2) {
+            bandera1=false;
+            defectLog.setDate(txtDate.getText().toString());
+            defectLog.setComments(txtDescripcion.getText().toString());
+            defectLog.setFixtime(txtFix.getText().toString());
+            defectLog.setType(spinnerType.getSelectedItem().toString());
+            defectLog.setPhaseI(spinnerPhaseInjected.getSelectedItem().toString());
+            defectLog.setPhaseR(spinnerPhaseRemoved.getSelectedItem().toString());
+            defectLog.setProject(MenuPrincipal.project.getId());
+            final Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.item_todo);
+            TextView txtTitulo = dialog.findViewById(R.id.txtTitulo);
+            txtTitulo.setText(getString(R.string.deseaseditar));
+            String messege = "DATE: "+defectLog.getDate() +"\n"+
+                    "TYPE: "+defectLog.getType() +"\n"+
+                    "PHASE INJETED: "+defectLog.getPhaseI() +"\n"+
+                    "PHASE REMOVED: "+defectLog.getPhaseR() +"\n"+
+                    "FIXTIME: "+defectLog.getFixtime() +"\n"+
+                    "DESCRIPCION: "+defectLog.getComments() +"\n";
+            TextView txtTodo = dialog.findViewById(R.id.txtTodo);
+            txtTodo.setText(messege);
+            Button btnAceptar = dialog.findViewById(R.id.btnAceptar);
+            Button btnCancelar = dialog.findViewById(R.id.btnCancelar);
+            btnAceptar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ManagerDB managerDB = new ManagerDB(DefectLog.this);
+                    managerDB.insertDefectLog(defectLog);
+                    Toast.makeText(DefectLog.this, "Se ha editado correctamente", Toast.LENGTH_SHORT).show();
+                    limpiar();
+                    dialog.cancel();
+                }
+            });
+
+            btnCancelar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.cancel();
+                }
+            });
+            
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+
+
+        }else {
+            Toast.makeText(this, "Faltan campos por ingresar", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //Método para ingresar valores los cuales se va a editar que vienen de LTimeLog
+    public void inputValues(){
+        defectLog = LDefectLog.defectLog;
+        try{
+            for (int i=0;i<listType.size();i++){
+                if (defectLog.getType().equals(listType.get(i))){
+                    spinnerType.setSelection(i);
+                }
+
+            }
+
+        }catch (Exception e){
+
+        }
+
+        try{
+            for (int i=0;i<listPhases.size();i++){
+                if (defectLog.getPhaseI().equals(listType.get(i))){
+                    spinnerPhaseInjected.setSelection(i);
+                }
+
+            }
+
+        }catch (Exception e){
+
+        }
+
+
+        try{
+            for (int i=0;i<listPhases.size();i++){
+                if (defectLog.getPhaseR().equals(listType.get(i))){
+                    spinnerPhaseRemoved.setSelection(i);
+                }
+
+            }
+
+        }catch (Exception e){
+
+        }
+
+        txtFix.setText(defectLog.getFixtime());
+        txtDescripcion.setText(defectLog.getComments());
+        txtDate.setText(defectLog.getDate());
+
+
 
     }
+
+
 }

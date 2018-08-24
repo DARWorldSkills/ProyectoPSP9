@@ -74,7 +74,7 @@ public class ManagerDB {
         values.put("FIXTIME",cDefectLog.getFixtime());
         values.put("COMMENTS",cDefectLog.getComments());
         values.put("PROJECT",cDefectLog.getProject());
-        db.insert("TIMELOG",null,values);
+        db.insert("DEFECTLOG",null,values);
         closeDB();
     }
 

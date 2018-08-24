@@ -19,6 +19,9 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.aprendiz.ragp.proyectopsp9.Fragments.Defect_Inject_In_Phase;
+import com.aprendiz.ragp.proyectopsp9.Fragments.Defect_Removed_in_phase;
+import com.aprendiz.ragp.proyectopsp9.Fragments.TimeInPhase;
 import com.aprendiz.ragp.proyectopsp9.R;
 
 public class ProyectPlanSummary extends AppCompatActivity {
@@ -141,6 +144,21 @@ public class ProyectPlanSummary extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            Fragment fragment = new Fragment();
+
+            switch (position){
+                case 0:
+                    fragment = new TimeInPhase();
+                    return fragment;
+                case 1:
+                    fragment = new Defect_Inject_In_Phase();
+                    return fragment;
+                case 2:
+                    fragment = new Defect_Removed_in_phase();
+                    return fragment;
+            }
+
+
             return PlaceholderFragment.newInstance(position + 1);
         }
 

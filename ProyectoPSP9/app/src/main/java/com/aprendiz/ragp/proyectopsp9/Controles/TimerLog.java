@@ -82,7 +82,6 @@ public class TimerLog extends AppCompatActivity implements View.OnClickListener{
         inicializar();
         escuchar();
         Listar();
-        validar();
         capturar();
         cancelar();
     }

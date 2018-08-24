@@ -78,7 +78,7 @@ public class TimeInPhase extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         final ManagerDB managerDB = new ManagerDB(getContext());
         final EditText txtTiempo = view.findViewById(R.id.txtTiempo);
-        txtTiempo.setText(MenuPrincipal.project.getTime());
+        txtTiempo.setText(Integer.toString(MenuPrincipal.project.getTime()));
         Button btnGuardar = view.findViewById(R.id.btnSave);
         //Acción la cual permite guardar el tiempo ingresado en el campo txtTiempo
         btnGuardar.setOnClickListener(new View.OnClickListener() {
