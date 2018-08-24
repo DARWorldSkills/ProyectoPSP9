@@ -32,7 +32,7 @@
         <EditText
             android:id="@+id/txtDate"
             android:layout_width="154dp"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:layout_height="match_parent"
             android:enabled="false" />
 
