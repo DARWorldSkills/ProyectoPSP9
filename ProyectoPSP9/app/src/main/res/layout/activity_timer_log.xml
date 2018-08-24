@@ -11,19 +11,18 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="47dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:layout_width="90dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Phase"
@@ -44,19 +43,18 @@
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="47dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <TextView
-            android:layout_width="90dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Start"
@@ -65,10 +63,10 @@
 
         <EditText
             android:id="@+id/txtStart"
-            android:layout_width="196dp"
+            android:layout_width="163dp"
             android:layout_height="match_parent"
-            android:textSize="14sp"
-            android:enabled="false" />
+            android:enabled="false"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnStart"
@@ -81,19 +79,18 @@
 
     <LinearLayout
         android:id="@+id/linearLayout5"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="47dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <TextView
-            android:layout_width="90dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Interruption"
@@ -103,27 +100,26 @@
         <EditText
             android:id="@+id/txtInterrupciones"
             android:layout_width="252dp"
-            android:inputType="number"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:inputType="number" />
 
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="47dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
         <TextView
-            android:layout_width="90dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Stop"
@@ -132,11 +128,11 @@
 
         <EditText
             android:id="@+id/txtStop"
-            android:layout_width="196dp"
-            android:textSize="14sp"
-            android:hint=""
+            android:layout_width="163dp"
             android:layout_height="match_parent"
-            android:enabled="false" />
+            android:enabled="false"
+            android:hint=""
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnStop"
@@ -149,14 +145,13 @@
 
     <LinearLayout
         android:id="@+id/linearLayout6"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="47dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
@@ -165,14 +160,14 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Delta"
-            android:textSize="15sp"
-            android:textColor="@color/azul" />
+            android:textColor="@color/azul"
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/txtDelta"
             android:layout_width="252dp"
-            android:enabled="false"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:enabled="false" />
 
 
     </LinearLayout>
