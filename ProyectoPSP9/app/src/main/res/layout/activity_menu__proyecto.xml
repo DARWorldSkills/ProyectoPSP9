@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo"
     tools:context=".Controles.Menu_Proyecto">
 
     <android.support.v7.widget.CardView
@@ -13,6 +14,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/azul"
         app:cardCornerRadius="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +26,7 @@
             style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="#fff"
             android:text="Timer Log" />
 
     </android.support.v7.widget.CardView>
@@ -35,6 +38,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        app:cardBackgroundColor="@color/azul"
         app:cardCornerRadius="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +49,7 @@
             android:id="@+id/btnDefectLog"
             style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
             android:layout_width="match_parent"
+            android:textColor="#fff"
             android:layout_height="match_parent"
             android:text="Defect Log" />
 
@@ -58,6 +63,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:cardCornerRadius="30dp"
+        app:cardBackgroundColor="@color/azul"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView2">
@@ -68,6 +74,7 @@
             style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="#fff"
             android:text="Proyect Plan Summary" />
 
     </android.support.v7.widget.CardView>
