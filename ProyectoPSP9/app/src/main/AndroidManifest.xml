@@ -10,13 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MenuPrincipal">
+
+        </activity>
+        <activity android:name=".Controles.Menu_Proyecto" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".Controles.Menu_Proyecto" />
         <activity
             android:name=".Controles.TimerLog"
             android:label="@string/title_activity_timer_log" />

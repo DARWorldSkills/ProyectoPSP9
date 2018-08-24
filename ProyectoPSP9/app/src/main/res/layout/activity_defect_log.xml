@@ -32,6 +32,7 @@
         <EditText
             android:id="@+id/txtDate"
             android:layout_width="214dp"
+            android:enabled="false"
             android:layout_height="match_parent" />
 
         <Button
@@ -159,6 +160,7 @@
         <EditText
             android:id="@+id/txtFixTime"
             android:layout_width="184dp"
+            android:enabled="false"
             android:layout_height="match_parent" />
 
         <Button
